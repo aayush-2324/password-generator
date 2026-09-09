@@ -1,22 +1,33 @@
-import random
+"""Secure command-line password generator."""
+
+import secrets
 import string
 
-print("Smart password generator")
 
-#take length from the user 
-length = int(input("Enter the length of the password:"))
- 
- #characters define
-letters =string.ascii_letters
-numbers = string.digits
-symbols = string.punctuation
+def generate_password(length: int) -> str:
+    """Generate a cryptographically secure random password."""
+    if length < 4:
+        raise ValueError("Password length must be at least 4.")
 
-all_characters = letters + numbers + symbols
+    characters = string.ascii_letters + string.digits + string.punctuation
+    return "".join(secrets.choice(characters) for _ in range(length))
 
-#password generation
-password = ""
 
-for i in range(length):
-    password +=random.choice(all_characters)
+def main() -> None:
+    print("=" * 34)
+    print("     Smart Password Generator")
+    print("=" * 34)
 
-print("Generated password:", password)
+    try:
+        length = int(input("Enter password length (4+): "))
+        password = generate_password(length)
+    except ValueError as error:
+        print(f"Error: {error}")
+        return
+
+    print(f"Generated password: {password}")
+    print("Tip: Store passwords in a password manager and never share them.")
+
+
+if __name__ == "__main__":
+    main()
